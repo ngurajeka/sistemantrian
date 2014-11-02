@@ -1,0 +1,15 @@
+{% extends "site/site.html" %}
+{% load staticfiles %}
+{% block WebTitle %}Beranda - {% endblock %}
+{% block WebContent %}
+<div class="well">
+ <div class="container text-center">
+  <img style="horizontal-align: middle;" src="{% static "site/img/kpp.png" %}">
+  <h1><strong>{{ WebName }}</strong></h1>
+  <p><b>Alamat :</b> Jl. Sultan Hasanuddin Sulawesi Selatan</p>
+  <p><b>Telepon :</b> 81985, 84046</p>
+  <p><b>Fax :</b> 82161</p>
+  <p><a class="btn btn-primary btn-lg" role="button" href="/user/login/">Masuk &raquo;</a></p>
+ </div>
+</div>
+{% endblock	%}

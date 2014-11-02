@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+ <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>{% block WebTitle %}{% endblock %}{{ WebName }}</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {% block media %}{% endblock %}
+  <link rel="stylesheet" href="{% static "site/css/fonts.css" %}">
+  <link rel="stylesheet" href="{% static "site/css/flatly.min.css" %}">
+  <style>
+   body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+   }
+   /* Custom container */
+   .container {
+    margin: 0 auto;
+    max-width: 960px;
+   }
+   .container > hr {
+    margin: 30px 0;
+   }
+  </style>
+  <link rel="stylesheet" href="{% static "site/css/main.css" %}">
+  {% block WebCSS %}{% endblock %}
+  <link rel="shortcut icon" href="{% static "site/favicon.ico" %}" type="image/x-icon">
+
+  <script src="{% static "site/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js" %}"></script>
+ </head>
+ <body>
+  <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+  <![endif]-->
+  <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+   <div class="container">
+    <div class="navbar-header">
+     <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+     </button>
+     <a class="navbar-brand" href="/" style="color: #ffffff;"><img style="vertical-align: middle;" src="{% static "site/img/kpp.png" %}" height="28px"> <strong>{{ SmallWebName }}</strong></a>
+    </div>
+    <div class="navbar-collapse collapse">
+     {% if ShowMenu %}
+     <ul class="nav navbar-nav navbar-left">
+      <li class="hidden">
+       <a href="#page-top"></a>
+      </li>
+      {% for menu in WebMenu %}
+       {% if menu.sub_menu > 0 %}
+        <li class="dropdown{% if menu.name == activeLink %} active{% endif %}">
+         <a href="{{ menu.link }}" class="dropdown-toggle" data-toggle="dropdown" id="{{ menu.pk }}"><strong style="color:#fff;">{{ menu.name }}</strong> <span class="caret"></span></a>
+         <ul class="dropdown-menu" aria-labelledby="{{ menu.pk }}">
+          {% for sub in menu.getSubMenu %}
+           <li><a href="{{ sub.link }}">{{ sub.name }}</a></li>
+          {% endfor %}
+         </ul>
+        </li>
+       {% else %}
+        <li{% if menu.name == activeLink %} class="active"{% endif %}><a href="{{ menu.link }}" class="nav-link"><strong style="color:#fff;">{{ menu.name }}</strong></a></li>
+       {% endif %}
+      {% endfor %}
+     </ul>
+     {% if user.is_authenticated %}
+     <ul class="nav navbar-nav navbar-right">
+      <li class="dropdown">
+       <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="usermenu"> <strong style="color:#fff;">{{ myData.Full_Name }}</strong> <span class="caret"></span></a>
+       <ul class="dropdown-menu" aria-labelledby="usermenu">
+        <li><a href="#">My Profile</a></li>
+        <li class="divider"></li>
+        <li><a href="/user/logout/">Logout</a></li>
+       </ul>
+      </li>
+     </ul>
+     {% else %}
+     <form id="navbar-login-form" class="navbar-form navbar-right" role="form" action="/user/login/" method="post">
+      {% csrf_token %}
+      <div class="form-group">
+       <input type="text" placeholder="Nama Pengguna" id="username" name="username" class="form-control">
+      </div>
+      <div class="form-group">
+       <input type="password" placeholder="Kata Sandi" id="password" name="password" class="form-control">
+      </div>
+      <button type="submit" class="btn btn-success">Masuk</button>
+     </form>
+     {% endif %}
+     {% endif %}
+    </div><!--/.navbar-collapse -->
+   </div>
+  </div>
+
+  {% block WebContent %}{% endblock %}
+  <div class="container">
+   <footer>
+    <p><strong>&copy; Kantor Pelayanan Pajak Pratama Bulukumba - 2014</strong></p>
+   </footer>
+  </div><!-- /container -->
+  <script src="{% static "site/js/vendor/jquery-1.11.1.min.js" %}"></script>
+  <script src="{% static "site/js/vendor/bootstrap.min.js" %}"></script>
+  <script src="{% static "site/js/main.js" %}"></script>
+  {% block WebJS %}{% endblock %}
+  {% block WebScript %}{% endblock %}
+ </body>
+</html>
